@@ -11,8 +11,8 @@
     "test-logging": "node test-logging.js",
     "start": "node mcpServer.js",
     "start-sse": "node mcpServer.js --sse",
-    "debug": "cross-env LOG_LEVEL=debug node mcpServer.js",
-    "debug-sse": "cross-env LOG_LEVEL=debug node mcpServer.js --sse"
+    "debug": "node mcpServer.js --debug",
+    "debug-sse": "node mcpServer.js --sse --debug"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.9.0",

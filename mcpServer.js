@@ -20,6 +20,11 @@ import { fileURLToPath } from "url";
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
 
+// Detect --debug flag and set LOG_LEVEL before dotenv loads
+if (process.argv.includes('--debug')) {
+  process.env.LOG_LEVEL = 'debug';
+}
+
 dotenv.config({ path: path.resolve(__dirname, ".env") });
 
 const SERVER_NAME = "generated-mcp-server";
@@ -45,7 +50,7 @@ async function transformTools(tools) {
       };
     })
     .filter(Boolean);
-  
+
   logger.info('SETUP', `Successfully transformed ${transformedTools.length} tools`);
   return transformedTools;
 }
@@ -65,7 +70,7 @@ async function setupServerHandlers(server, tools) {
     const requestId = logger.generateRequestId();
     const toolName = request.params.name;
     const args = request.params.arguments;
-    
+
     logger.info('REQUEST', `CallTool request received`, {
       requestId,
       toolName,
@@ -83,7 +88,7 @@ async function setupServerHandlers(server, tools) {
     }
 
     const requiredParameters = tool.definition?.function?.parameters?.required || [];
-    
+
     // Validate required parameters
     for (const requiredParameter of requiredParameters) {
       if (!(requiredParameter in args)) {
@@ -109,7 +114,7 @@ async function setupServerHandlers(server, tools) {
 
       const result = await tool.function(args);
       const duration = Date.now() - startTime;
-      
+
       logger.info('EXECUTION', `Tool execution completed successfully`, {
         requestId,
         toolName,
@@ -136,7 +141,7 @@ async function setupServerHandlers(server, tools) {
       };
     } catch (error) {
       const duration = Date.now() - startTime;
-      
+
       logger.error('EXECUTION', `Tool execution failed`, {
         requestId,
         toolName,
@@ -148,7 +153,7 @@ async function setupServerHandlers(server, tools) {
         },
         args: args
       });
-      
+
       console.error("[Error] Failed to fetch data:", error);
       throw new McpError(
         ErrorCode.InternalError,
@@ -161,9 +166,9 @@ async function setupServerHandlers(server, tools) {
 async function run() {
   const args = process.argv.slice(2);
   const isSSE = args.includes("--sse");
-  
+
   logger.info('STARTUP', `Starting MCP server in ${isSSE ? 'SSE' : 'STDIO'} mode`);
-  
+
   const tools = await discoverTools();
   logger.info('STARTUP', `Discovered ${tools.length} tools`, {
     toolPaths: tools.map(t => t.path),
@@ -178,7 +183,7 @@ async function run() {
     app.get("/sse", async (_req, res) => {
       const sessionId = Date.now().toString();
       logger.info('SSE', `New SSE connection established`, { sessionId });
-      
+
       // Create a new Server instance for each session
       const server = new Server(
         {
@@ -191,12 +196,12 @@ async function run() {
           },
         }
       );
-      
+
       server.onerror = (error) => {
         logger.error('SSE', `Server error for session ${sessionId}`, error);
         console.error("[Error]", error);
       };
-      
+
       await setupServerHandlers(server, tools);
 
       const transport = new SSEServerTransport("/messages", res);
@@ -235,7 +240,7 @@ async function run() {
   } else {
     // stdio mode: single server instance
     logger.info('STDIO', 'Initializing STDIO server');
-    
+
     const server = new Server(
       {
         name: SERVER_NAME,
@@ -247,12 +252,12 @@ async function run() {
         },
       }
     );
-    
+
     server.onerror = (error) => {
       logger.error('STDIO', 'Server error', error);
       console.error("[Error]", error);
     };
-    
+
     await setupServerHandlers(server, tools);
 
     process.on("SIGINT", async () => {
