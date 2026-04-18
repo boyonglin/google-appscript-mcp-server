@@ -1,4 +1,5 @@
 export const toolPaths = [
+  'google-app-script-api/apps-script-api/script-projects-list.js',
   'google-app-script-api/apps-script-api/script-projects-deployments-delete.js',
   'google-app-script-api/apps-script-api/script-projects-create.js',
   'google-app-script-api/apps-script-api/script-projects-versions-create.js',

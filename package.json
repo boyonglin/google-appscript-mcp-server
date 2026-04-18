@@ -6,13 +6,13 @@
   "type": "module",
   "scripts": {
     "list-tools": "node index.js tools",
-    "test-oauth": "node test-oauth.js",
+    "test-oauth": "node test/test-oauth.js",
     "setup-oauth": "node oauth-setup.js",
     "test-logging": "node test-logging.js",
     "start": "node mcpServer.js",
     "start-sse": "node mcpServer.js --sse",
-    "debug": "LOG_LEVEL=debug node mcpServer.js",
-    "debug-sse": "LOG_LEVEL=debug node mcpServer.js --sse"
+    "debug": "cross-env LOG_LEVEL=debug node mcpServer.js",
+    "debug-sse": "cross-env LOG_LEVEL=debug node mcpServer.js --sse"
   },
   "dependencies": {
     "@modelcontextprotocol/sdk": "^1.9.0",
