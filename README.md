@@ -1,10 +1,10 @@
 # Google Apps Script MCP Server
 
-**Author**: [mohalmah](https://github.com/mohalmah)  
-**License**: MIT License  
+**Author**: [mohalmah](https://github.com/mohalmah)
+**License**: MIT License
 **Repository**: [google-apps-script-mcp-server](https://github.com/mohalmah/google-apps-script-mcp-server)
 
-Welcome to the Google Apps Script MCP (Model Context Protocol) Server! 🚀 
+Welcome to the Google Apps Script MCP (Model Context Protocol) Server! 🚀
 
 This MCP server provides comprehensive integration with the Google Apps Script API, allowing you to manage script projects, deployments, versions, and executions through any MCP-compatible client like Claude Desktop, VS Code with Cline, or Postman.
 
@@ -25,7 +25,7 @@ This MCP server provides comprehensive integration with the Google Apps Script A
 This MCP server enables seamless interaction with Google Apps Script through:
 
 - ✅ **OAuth 2.0 Authentication** - Secure token management with automatic refresh
-- ✅ **16 Comprehensive Tools** - Complete Google Apps Script API coverage
+- ✅ **17 Comprehensive Tools** - Complete Google Apps Script API coverage
 - ✅ **MCP Protocol Compliance** - Works with Claude Desktop, VS Code, and other MCP clients
 - ✅ **Secure Token Storage** - OS-specific secure storage for refresh tokens
 - ✅ **Auto Token Refresh** - Handles token expiration automatically
@@ -274,11 +274,30 @@ npm run debug
 
 ## 🛠️ Available Tools
 
-This MCP server provides 16 comprehensive tools for Google Apps Script management:
+This MCP server provides 17 comprehensive tools for Google Apps Script management:
 
 ### Project Management Tools
 
-#### 1. `script-projects-create`
+#### 1. `script-projects-list`
+**Purpose**: List all Google Apps Script projects owned by or shared with the authenticated user
+**Parameters**:
+- `pageSize` (optional): Maximum number of projects to return (1-100, default: 50)
+- `pageToken` (optional): Token for fetching the next page of results
+- `query` (optional): Filter projects by name (partial match)
+
+**What it returns**: List of script projects with scriptId, name, createdTime, modifiedTime, and owner
+**Example Usage**: Discover all available script projects
+```javascript
+// List all projects
+{}
+// Filter by name
+{
+  "query": "My Automation",
+  "pageSize": 10
+}
+```
+
+#### 2. `script-projects-create`
 **Purpose**: Create a new Google Apps Script project
 **Parameters**:
 - `title` (required): The title of the new script project
@@ -293,7 +312,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 }
 ```
 
-#### 2. `script-projects-get`
+#### 3. `script-projects-get`
 **Purpose**: Get metadata of a Google Apps Script project
 **Parameters**:
 - `scriptId` (required): The ID of the script project to retrieve
@@ -308,7 +327,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 }
 ```
 
-#### 3. `script-projects-get-content`
+#### 4. `script-projects-get-content`
 **Purpose**: Get the content of a Google Apps Script project
 **Parameters**:
 - `scriptId` (required): The ID of the script project
@@ -317,7 +336,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 **What it returns**: Complete source code and files in the project
 **Example Usage**: Download script source code for backup or analysis
 
-#### 4. `script-projects-update-content`
+#### 5. `script-projects-update-content`
 **Purpose**: Update the content of a Google Apps Script project
 **Parameters**:
 - `scriptId` (required): The ID of the script project to update
@@ -327,7 +346,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 
 ### Version Management Tools
 
-#### 5. `script-projects-versions-create`
+#### 6. `script-projects-versions-create`
 **Purpose**: Create a new version of a Google Apps Script project
 **Parameters**:
 - `scriptId` (required): The ID of the script project
@@ -341,13 +360,13 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 }
 ```
 
-#### 6. `script-projects-versions-get`
+#### 7. `script-projects-versions-get`
 **Purpose**: Get details of a specific script version
 **Parameters**:
 - `scriptId` (required): The ID of the script project
 - `versionNumber` (required): The version number to retrieve
 
-#### 7. `script-projects-versions-list`
+#### 8. `script-projects-versions-list`
 **Purpose**: List all versions of a script project
 **Parameters**:
 - `scriptId` (required): The ID of the script project
@@ -356,7 +375,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 
 ### Deployment Management Tools
 
-#### 8. `script-projects-deployments-create`
+#### 9. `script-projects-deployments-create`
 **Purpose**: Create a deployment of a Google Apps Script project
 **Parameters**:
 - `scriptId` (required): The ID of the script to deploy
@@ -374,26 +393,26 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 }
 ```
 
-#### 9. `script-projects-deployments-get`
+#### 10. `script-projects-deployments-get`
 **Purpose**: Get details of a specific deployment
 **Parameters**:
 - `scriptId` (required): The ID of the script project
 - `deploymentId` (required): The ID of the deployment
 
-#### 10. `script-projects-deployments-list`
+#### 11. `script-projects-deployments-list`
 **Purpose**: List all deployments of a script project
 **Parameters**:
 - `scriptId` (required): The ID of the script project
 - `pageSize` (optional): Number of deployments per page
 
-#### 11. `script-projects-deployments-update`
+#### 12. `script-projects-deployments-update`
 **Purpose**: Update an existing deployment
 **Parameters**:
 - `scriptId` (required): The ID of the script project
 - `deploymentId` (required): The ID of the deployment to update
 - `deploymentConfig` (required): New deployment configuration
 
-#### 12. `script-projects-deployments-delete`
+#### 13. `script-projects-deployments-delete`
 **Purpose**: Delete a deployment
 **Parameters**:
 - `scriptId` (required): The ID of the script project
@@ -401,7 +420,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 
 ### Execution and Monitoring Tools
 
-#### 13. `script-scripts-run`
+#### 14. `script-scripts-run`
 **Purpose**: Execute a Google Apps Script function
 **Parameters**:
 - `scriptId` (required): The ID of the script to run
@@ -410,7 +429,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 **Example Usage**: Trigger script execution remotely
 **Note**: The script must be deployed and you must have execution permissions
 
-#### 14. `script-processes-list`
+#### 15. `script-processes-list`
 **Purpose**: List execution processes for a script project
 **Parameters**:
 - `scriptId` (required): The ID of the script project
@@ -424,11 +443,11 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 
 **What it shows**: Running, completed, and failed script executions
 
-#### 15. `script-processes-list-script-processes`
+#### 16. `script-processes-list-script-processes`
 **Purpose**: Alternative method to list script processes with additional filtering
 **Parameters**: Similar to `script-processes-list` with enhanced filtering options
 
-#### 16. `script-projects-get-metrics`
+#### 17. `script-projects-get-metrics`
 **Purpose**: Get execution metrics and analytics for a script project
 **Parameters**:
 - `scriptId` (required): The ID of the script project
@@ -436,7 +455,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 - `metricsGranularity` (required): Granularity of metrics data
 - `fields` (required): Specific metric fields to retrieve
 
-**What it provides**: 
+**What it provides**:
 - Execution counts
 - Error rates
 - Performance metrics
@@ -446,7 +465,7 @@ This MCP server provides 16 comprehensive tools for Google Apps Script managemen
 
 | Category | Tools | Purpose |
 |----------|-------|---------|
-| **Project Management** | create, get, get-content, update-content | Manage script projects and source code |
+| **Project Management** | list, create, get, get-content, update-content | Manage script projects and source code |
 | **Version Control** | versions-create, versions-get, versions-list | Handle script versioning |
 | **Deployment** | deployments-create, deployments-get, deployments-list, deployments-update, deployments-delete | Manage script deployments |
 | **Execution** | scripts-run | Execute script functions |
@@ -478,7 +497,7 @@ The MCP Server (`mcpServer.js`) exposes your automated API tools to MCP-compatib
 
 **Step 2**: Read the documentation article [here](https://learning.postman.com/docs/postman-ai-agent-builder/mcp-requests/create/) and see how to create an MCP request inside the Postman app.
 
-**Step 3**: Set the type of the MCP request to `STDIO` and set the command to `node <absolute/path/to/mcpServer.js>`. 
+**Step 3**: Set the type of the MCP request to `STDIO` and set the command to `node <absolute/path/to/mcpServer.js>`.
 
 **For Windows users**, you can get the full path to node by running:
 
@@ -804,7 +823,7 @@ Replace these paths with your actual system paths:
 #### 2. "fetch is not defined" errors
 **Problem**: Your Node.js version is below 18
 **Solutions**:
-- **Recommended**: Upgrade to Node.js 18+ 
+- **Recommended**: Upgrade to Node.js 18+
 - **Alternative**: Install `node-fetch` as a dependency:
   ```bash
   npm install node-fetch
@@ -824,7 +843,7 @@ Replace these paths with your actual system paths:
 - Verify the callback URL is exactly: `http://localhost:3001/oauth/callback`
 - Make sure your Google account is added as a test user
 
-#### 4. "Authorization Error: Access blocked" 
+#### 4. "Authorization Error: Access blocked"
 **Problem**: Google OAuth consent screen configuration issues
 **Solutions**:
 - Ensure your app is configured for "External" users
@@ -864,7 +883,7 @@ Replace these paths with your actual system paths:
   # Find process using port 3001
   lsof -i :3001  # macOS/Linux
   netstat -ano | findstr :3001  # Windows
-  
+
   # Kill the process
   kill -9 <PID>  # macOS/Linux
   taskkill /PID <PID> /F  # Windows
@@ -982,7 +1001,7 @@ PORT=3001                        # OAuth callback port
 
 #### Logging Levels
 - `debug`: Detailed debugging information
-- `info`: General information messages  
+- `info`: General information messages
 - `warn`: Warning messages
 - `error`: Error messages only
 
@@ -1051,7 +1070,7 @@ import { getAuthHeaders } from '../../../lib/oauth-helper.js';
 
 const executeFunction = async ({ param1, param2 }) => {
   const baseUrl = 'https://script.googleapis.com';
-  
+
   try {
     const headers = await getAuthHeaders();
     const response = await fetch(`${baseUrl}/v1/your-endpoint`, {
@@ -1059,7 +1078,7 @@ const executeFunction = async ({ param1, param2 }) => {
       headers,
       body: JSON.stringify({ param1, param2 })
     });
-    
+
     return await response.json();
   } catch (error) {
     throw new Error(`API call failed: ${error.message}`);
@@ -1088,30 +1107,30 @@ import { getAuthHeaders } from '../../../lib/oauth-helper.js';
  */
 const executeFunction = async (args) => {
   const baseUrl = 'https://script.googleapis.com';
-  
+
   try {
     // 1. Validate parameters
     if (!args.requiredParam) {
       throw new Error('requiredParam is required');
     }
-    
+
     // 2. Get authentication headers
     const headers = await getAuthHeaders();
-    
+
     // 3. Make API call
     const response = await fetch(`${baseUrl}/v1/endpoint`, {
       method: 'GET/POST/PUT/DELETE',
       headers,
       body: JSON.stringify(args) // for POST/PUT
     });
-    
+
     // 4. Handle response
     if (!response.ok) {
       throw new Error(`API error: ${response.status} ${response.statusText}`);
     }
-    
+
     return await response.json();
-    
+
   } catch (error) {
     console.error('Tool execution failed:', error);
     throw error;
